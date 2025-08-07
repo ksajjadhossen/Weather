@@ -29,14 +29,16 @@ const useWeather = () => {
         state: true,
         message: "Fetching weather data",
       });
-      console.log(import.meta.env.VITE_WEATHER_API_KEY);
+      console.log(import.meta.env.VITE_WEATHER_API_KEY, latitude, longitude);
 
       const response = await fetch(
-        `https://api.openweathermap.org/data/3.0/onecall?lat=${latitude}&lon=${longitude}&exclude={part}&appid=${
+        `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${
           import.meta.env.VITE_WEATHER_API_KEY
-        }&units=metric`
+        }&units=metric&lang=en
+`
       );
 
+      console.log(response);
       if (!response.ok) {
         const errorMessage = `fetching weather data failed:${response.status}`;
         throw new Error(errorMessage);
@@ -77,7 +79,7 @@ const useWeather = () => {
     });
 
     navigator.geolocation.getCurrentPosition(function (position) {
-      fetchWeatherData(position.coords.latitude, position.coords.longitude);
+      fetchWeatherData(position.coords.longitude, position.coords.latitude);
     });
   }, []);
 
